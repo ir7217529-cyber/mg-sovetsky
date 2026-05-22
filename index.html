@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
-
-<script>
-  vkBridge.send('VKWebAppInit');
-</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>МГ Советский район • Календарь мероприятий</title>
@@ -97,6 +92,35 @@
       color: var(--muted);
       font-size: 14px;
       white-space: nowrap;
+    }
+
+    .urgent {
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
+      color: #9f1239;
+      border-radius: 20px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      box-shadow: var(--shadow);
+    }
+
+    .urgent span {
+      background: #e11d48;
+      color: white;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      flex: 0 0 auto;
+    }
+
+    .urgent b {
+      font-size: 15px;
+      line-height: 1.35;
     }
 
     .hero {
@@ -321,6 +345,11 @@
       <div class="status">Обновлено сегодня</div>
     </header>
 
+    <section class="urgent" id="urgentBox" style="display: none;">
+      <span>Срочно</span>
+      <b id="urgentText"></b>
+    </section>
+
     <section class="hero">
       <div class="badge">Ближайшее мероприятие</div>
 
@@ -405,6 +434,17 @@
       if (!events.length) return;
 
       const main = events[0];
+
+      const urgentBox = document.getElementById("urgentBox");
+      const urgentText = document.getElementById("urgentText");
+      const urgentValue = main["Срочно"] ? String(main["Срочно"]).trim() : "";
+
+      if (urgentValue) {
+        urgentText.textContent = urgentValue;
+        urgentBox.style.display = "flex";
+      } else {
+        urgentBox.style.display = "none";
+      }
 
       document.querySelector(".hero h2").textContent = getValue(main, "Название");
       document.querySelector(".hero p").textContent = getValue(main, "Описание");
