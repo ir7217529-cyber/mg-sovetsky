@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>МГ Советский район • Календарь мероприятий</title>
+
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: rgba(255,255,255,0.9);
+      --text: #111827;
+      --muted: #6b7280;
+      --blue: #2563eb;
+      --blue-soft: #eff6ff;
+      --line: #e5e7eb;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      --radius: 22px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(37,99,235,0.10), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(900px, 100%);
+      margin: 0 auto;
+      padding: 22px 14px 40px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      letter-spacing: -1px;
+      box-shadow: 0 10px 25px rgba(37,99,235,0.22);
+      flex: 0 0 auto;
+    }
+
+    h1 {
+      font-size: clamp(22px, 4vw, 34px);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .status {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .hero {
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.8);
+      border-radius: 28px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(37,99,235,0.06);
+      top: -120px;
+      right: -100px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h2 {
+      font-size: clamp(34px, 7vw, 58px);
+      line-height: 0.95;
+      letter-spacing: -0.07em;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+      max-width: 650px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 620px;
+      margin-bottom: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+      margin-bottom: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .info {
+      padding: 15px;
+      border-radius: 18px;
+      background: rgba(249,250,251,0.95);
+      border: 1px solid var(--line);
+    }
+
+    .info span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .info b {
+      font-size: 16px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn {
+      min-height: 46px;
+      padding: 12px 18px;
+      border-radius: 15px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 15px;
+      transition: .2s ease;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: white;
+      box-shadow: 0 10px 20px rgba(37,99,235,0.2);
+    }
+
+    .btn-secondary {
+      background: white;
+      border: 1px solid var(--line);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .section-title {
+      font-size: 22px;
+      letter-spacing: -0.04em;
+      margin-bottom: 14px;
+    }
+
+    .events {
+      display: grid;
+      gap: 14px;
+    }
+
+    .event {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.8);
+      border-radius: 22px;
+      padding: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .event-left h3 {
+      font-size: 19px;
+      letter-spacing: -0.03em;
+      margin-bottom: 5px;
+    }
+
+    .event-left p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .event-date {
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 700px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .status {
+        display: none;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .event {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .container {
+        padding: 14px 10px 30px;
+      }
+
+      .hero {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      .hero h2 {
+        font-size: 40px;
+      }
+
+      .buttons {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+
+    <header>
+      <div class="brand">
+        <div class="logo">МГ</div>
+        <div>
+          <h1>МГ Советский район • Календарь мероприятий</h1>
+          <p class="subtitle">Актуальная информация для активистов</p>
+        </div>
+      </div>
+
+      <div class="status">Обновлено сегодня</div>
+    </header>
+
+    <section class="hero">
+      <div class="badge">Ближайшее мероприятие</div>
+
+      <h2>Экопатриот</h2>
+
+      <p>
+        Волонтёрская помощь на площадке по сбору вторсырья.
+        Встреча жителей, помощь с организацией и навигацией.
+      </p>
+
+      <div class="info-grid">
+        <div class="info">
+          <span>Дата и время</span>
+          <b>25 мая • 10:00</b>
+        </div>
+
+        <div class="info">
+          <span>Место</span>
+          <b>Советский район</b>
+        </div>
+
+        <div class="info">
+          <span>Что взять</span>
+          <b>Воду и удобную одежду</b>
+        </div>
+
+        <div class="info">
+          <span>Ответственный</span>
+          <b>Координатор МГ</b>
+        </div>
+      </div>
+
+      <div class="buttons">
+        <a href="#" class="btn btn-primary">Открыть маршрут</a>
+        <a href="#" class="btn btn-secondary">Написать в ВК</a>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Далее</h2>
+
+      <div class="events">
+        <article class="event">
+          <div class="event-left">
+            <h3>Размещение афиш</h3>
+            <p>Советский район • 16:00</p>
+          </div>
+
+          <div class="event-date">27 мая</div>
+        </article>
+
+        <article class="event">
+          <div class="event-left">
+            <h3>Собрание актива</h3>
+            <p>Штаб / онлайн • 18:30</p>
+          </div>
+
+          <div class="event-date">30 мая</div>
+        </article>
+
+        <article class="event">
+          <div class="event-left">
+            <h3>Волонтёрская помощь</h3>
+            <p>Место уточняется • 12:00</p>
+          </div>
+
+          <div class="event-date">2 июня</div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+    <script>
+    const SHEET_ID = "1Z2HxHTFosJOROp8yYqzfFAnw4IgCmYKiqQgpZH8HRbw";
+    const SHEET_GID = "0";
+
+    function getValue(item, name) {
+      return item[name] && String(item[name]).trim() ? String(item[name]).trim() : "Не указано";
+    }
+
+    function updateSite(events) {
+      if (!events.length) return;
+
+      const main = events[0];
+
+      document.querySelector(".hero h2").textContent = getValue(main, "Название");
+      document.querySelector(".hero p").textContent = getValue(main, "Описание");
+
+      const infoBlocks = document.querySelectorAll(".info b");
+      infoBlocks[0].textContent = getValue(main, "Дата");
+      infoBlocks[1].textContent = getValue(main, "Место");
+      infoBlocks[2].textContent = getValue(main, "Что взять");
+      infoBlocks[3].textContent = getValue(main, "Ответственный");
+
+      const routeBtn = document.querySelector(".btn-primary");
+      const vkBtn = document.querySelector(".btn-secondary");
+
+      if (main["Маршрут"] && main["Маршрут"] !== "Не указано") {
+        routeBtn.href = main["Маршрут"];
+        routeBtn.target = "_blank";
+      }
+
+      if (main["ВК"] && main["ВК"] !== "Не указано") {
+        vkBtn.href = main["ВК"];
+        vkBtn.target = "_blank";
+      }
+
+      const eventsContainer = document.querySelector(".events");
+      eventsContainer.innerHTML = "";
+
+      const nextEvents = events.slice(1);
+
+      if (!nextEvents.length) {
+        eventsContainer.innerHTML = `
+          <article class="event empty-event">
+            <div class="event-left">
+              <h3>Пока нет следующих мероприятий</h3>
+              <p>Когда координатор добавит строки в таблицу, они появятся здесь автоматически.</p>
+            </div>
+          </article>
+        `;
+        return;
+      }
+
+      nextEvents.forEach(event => {
+        const card = document.createElement("article");
+        card.className = "event";
+        card.innerHTML = `
+          <div class="event-left">
+            <h3>${getValue(event, "Название")}</h3>
+            <p>${getValue(event, "Место")} • ${getValue(event, "Ответственный")}</p>
+          </div>
+          <div class="event-date">${getValue(event, "Дата")}</div>
+        `;
+        eventsContainer.appendChild(card);
+      });
+    }
+
+    window.handleSheetData = function(response) {
+      const cols = response.table.cols.map(col => col.label.trim());
+      const rows = response.table.rows;
+
+      const events = rows.map(row => {
+        const item = {};
+
+        cols.forEach((name, index) => {
+          const cell = row.c[index];
+          item[name] = cell ? (cell.f || cell.v || "") : "";
+        });
+
+        return item;
+      }).filter(item => item["Название"]);
+
+      updateSite(events);
+    };
+
+    const script = document.createElement("script");
+    script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json;responseHandler:handleSheetData&gid=${SHEET_GID}`;
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>
